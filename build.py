@@ -6,6 +6,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 BASE = 'https://speedwork.aymanstack.com'
 BB = ['#22d3ee', '#a855f7', '#fde047', '#fb923c']
 E = html.escape
+CUR = ' aria-current="page"'  # kept out of f-string expressions: Python < 3.12 forbids backslashes there
 HUB = {'dev': 'dev-tools', 'design': 'design-tools', 'finance': 'finance-tools', 'creator': 'creator-tools'}
 CAT = {'dev': 'DeveloperApplication', 'design': 'DesignApplication', 'finance': 'FinanceApplication', 'creator': 'BusinessApplication'}
 LABEL = {'dev': 'Developer Tools', 'design': 'Design Tools', 'finance': 'Finance Tools', 'creator': 'Creator & SEO Tools'}
@@ -78,7 +79,7 @@ def crumbs(items):
     return {'@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': BASE + p} for i, (n, p) in enumerate(items)]}
 
 def top(active=None):
-    tabs = ''.join(f'<a href="{r["hub"]}" class="rb glass rounded-lg py-1.5 px-4 text-sm border whitespace-nowrap {"on" if i == active else ""}" style="border-color:{r["a"] if i == active else "transparent"}"{" aria-current=\"page\"" if i == active else ""}>{r["i"]} {r["n"]}</a>' for i, r in enumerate(R))
+    tabs = ''.join(f'<a href="{r["hub"]}" class="rb glass rounded-lg py-1.5 px-4 text-sm border whitespace-nowrap {"on" if i == active else ""}" style="border-color:{r["a"] if i == active else "transparent"}"{CUR if i == active else ""}>{r["i"]} {r["n"]}</a>' for i, r in enumerate(R))
     return f'''<a class="skip" href="#main">Skip to content</a>
 <header class="sticky top-0 z-30 glass border-b border-slate-800/70"><div class="max-w-7xl mx-auto flex items-center gap-4 px-4 lg:px-6 py-2.5">
 <a href="/" class="flex items-center gap-3 shrink-0" aria-label="SpeedWork home"><span class="w-10 h-10 rounded-xl grid place-items-center font-black text-slate-950 text-sm" style="background:linear-gradient(135deg,var(--a),var(--b))" aria-hidden="true">&lt;/&gt;</span><span class="font-extrabold text-lg">Speed<span class="hero-g">Work</span></span></a>
@@ -136,7 +137,7 @@ for ri, r in enumerate(R):
         title = f'{h1} – Free Online Tool | SpeedWork'
         if len(title) > 60: title = f'{h1} | SpeedWork'
         desc = f'{t["d"]} Free, private and runs in your browser – no sign-up.'
-        side = ''.join(f'<a href="{x["path"]}" class="tool {"on" if x is t else ""} rounded-xl px-3 py-2.5 flex items-center gap-3 text-slate-300 text-[15px]"{" aria-current=\"page\"" if x is t else ""}><span class="w-6 text-center" aria-hidden="true">{x["i"]}</span><span class="flex-1 font-medium">{E(x["n"])}</span><kbd class="mono">Alt {j + 1}</kbd></a>' for j, x in enumerate(r['tools']))
+        side = ''.join(f'<a href="{x["path"]}" class="tool {"on" if x is t else ""} rounded-xl px-3 py-2.5 flex items-center gap-3 text-slate-300 text-[15px]"{CUR if x is t else ""}><span class="w-6 text-center" aria-hidden="true">{x["i"]}</span><span class="flex-1 font-medium">{E(x["n"])}</span><kbd class="mono">Alt {j + 1}</kbd></a>' for j, x in enumerate(r['tools']))
         chips = ''.join(f'<a href="{x["path"]}" class="pill whitespace-nowrap {"on" if x is t else ""}" style="{"border-color:var(--a)" if x is t else ""}">{x["i"]} {E(x["n"])}</a>' for x in r['tools'])
         step1 = 'Drop, click or paste (Ctrl+V) an image onto the tool.' if t['img'] else 'Set the options with the controls; there is no text to paste for this tool.' if t['noin'] else 'Paste or type your input, or press Ctrl+V anywhere on the page.'
         faqs = [(f'Is the {h1} free to use?', f'Yes. The {h1} is completely free, needs no account and has no usage limits.'),

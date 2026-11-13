@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://speedwork.aymanstack.com/sitemap.xml

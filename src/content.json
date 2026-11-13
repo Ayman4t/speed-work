@@ -1,0 +1,130 @@
+{
+  "Tailwind Sorter": {
+    "about": "Long class lists drift out of order as a component grows, and the same utility ends up written twice. This tool splits the list on whitespace, orders the classes in a consistent layout-first sequence, drops exact duplicates, and keeps only the last of two competing utilities such as p-4 and p-2, which is the one a developer usually meant to win.",
+    "tip": "The ordering is a lightweight approximation, not a copy of the official Prettier plugin. Use it to tidy a snippet quickly, and keep the plugin in your editor for whole-project formatting."
+  },
+  "JSON Formatter": {
+    "about": "Paste a payload from an API response, a log line or a config file and choose pretty, minify or validate. Pretty mode indents with two spaces so nested objects become readable; minify strips every optional space for the smallest payload. When the JSON is invalid, the error message is shown along with the exact character where parsing stopped, highlighted in your input.",
+    "tip": "Most invalid JSON is one of three mistakes: a trailing comma, single quotes instead of double quotes, or an unquoted key. Check the highlighted character first, because the real mistake is usually just before it."
+  },
+  "JSON ⇄ TS / CSV": {
+    "about": "Turn a sample JSON payload into TypeScript interfaces you can paste straight into a project, or flatten an array of objects into CSV for a spreadsheet. The TypeScript output names a root interface and creates nested interfaces for child objects. The CSV output builds its header from every key found across all the rows.",
+    "tip": "Types are inferred from the sample you paste. Include a record that has every optional field filled in, or the generated interface will miss properties that only appear in some responses."
+  },
+  "JWT Decoder": {
+    "about": "A JSON Web Token is three Base64URL segments joined by dots. This decoder reads the header and payload, pretty-prints both, and converts the exp, iat and nbf timestamps into readable UTC dates. It also tells you whether the token has already expired, which is the first thing to check when an API suddenly answers 401.",
+    "tip": "Decoding is not verifying. Anyone can read a token's payload, and this tool does not check the signature, so never treat a decoded token as proof that it is genuine."
+  },
+  "Encode / Decode": {
+    "about": "Switch between Base64, URL percent-encoding and HTML entities with one dropdown instead of opening three different tools. Base64 handles full Unicode text, so Arabic, accented letters and emoji survive the round trip. URL mode uses encodeURIComponent, which makes it right for query-string values and path segments.",
+    "tip": "Encode a whole URL with URL encode and its slashes and colons will be escaped too. Encode only the parameter value, then place it inside your link."
+  },
+  "Regex Tester": {
+    "about": "Build a JavaScript regular expression and watch every match highlight in your test string as you type. Each match lists its position, numbered capture groups and named groups. Toggle the g, i, m, s and u flags individually, and fill in the replace field to preview the substituted text before it goes into code.",
+    "tip": "Start from one of the preset chips for email, URL, HEX colour, date or named groups, then edit it. Changing a working pattern is quicker than writing one from scratch, and the match list shows right away what you broke."
+  },
+  "Minify / Beautify": {
+    "about": "Compress or reformat HTML, CSS, JavaScript and SQL in one place. Beautify adds line breaks and indentation so minified code can be read and diffed. Minify removes comments and unneeded whitespace to cut file size. For SQL, beautify also starts major clauses like SELECT, FROM and WHERE on their own lines.",
+    "tip": "This is a whitespace and comment minifier, not a full compiler, so it will not rename variables or remove dead code. For production JavaScript bundles, use your build tool, and use this for quick one-off snippets."
+  },
+  "Diff Checker": {
+    "about": "Compare two blocks of text line by line and see what changed. Lines only in the first text are marked in red with a minus sign, lines only in the second are green with a plus, and unchanged lines are shown in grey for context. It is useful for config files, copy revisions, API responses and anything else you would otherwise compare by eye.",
+    "tip": "Paste text A, add a line containing five equals signs (=====), then paste text B below it. The comparison works by whole lines, so a changed word flags the entire line it sits on."
+  },
+  "Palette Extractor": {
+    "about": "Drop in a logo, screenshot or photo and get the six most dominant colours as HEX and RGB values, each matched to its nearest Tailwind CSS colour name. The image is shrunk to a small sample on a hidden canvas in your browser, so even large photos are analysed quickly and are never uploaded anywhere.",
+    "tip": "Flat artwork gives cleaner results than photographs. If a photo returns muddy browns, crop to the area that holds the brand colours first and paste that instead."
+  },
+  "SVG Optimizer & JSX": {
+    "about": "SVGs exported from design tools carry editor metadata, comments and XML headers that add bytes and no pixels. This tool strips them, collapses the whitespace, shows a live preview and reports the before and after size. Switch the output to JSX and it renames class to className and converts hyphenated attributes such as stroke-width to strokeWidth for React.",
+    "tip": "The preview is drawn on a dark background with white text, so icons that use currentColor show up white. Keep currentColor in the code you copy, and the icon will then follow the text colour of wherever you place it."
+  },
+  "Color & Contrast": {
+    "about": "Enter a colour as HEX, RGB or HSL and see it in all three notations plus the closest Tailwind colour. Choose a background and the tool computes the WCAG contrast ratio, then reports pass or fail for AA and AAA at normal and large text sizes, with a live sample so you can judge legibility as well as the numbers.",
+    "tip": "Body text needs a ratio of at least 4.5:1 to pass AA. Large text (roughly 24px, or 19px bold) only needs 3:1, so a colour that fails for paragraphs may still be fine for headlines."
+  },
+  "px ⇄ rem & clamp()": {
+    "about": "Type one pixel size per line and get each as rem, using whatever base size you set. The first and last lines also define a fluid range: the tool outputs a clamp() expression that scales smoothly between the minimum and maximum viewport widths, so headings grow with the screen without media queries.",
+    "tip": "Put the smallest size on the first line and the largest on the last. The defaults of 375px and 1280px suit phones to laptops; widen the maximum viewport if you want the text to keep growing on big monitors."
+  },
+  "Glass & Shadow Studio": {
+    "about": "Design a box shadow, a frosted-glass panel or a soft neumorphic surface with sliders for offset, blur, spread, opacity and corner radius. The preview updates live on a background you choose. When it looks right, copy plain CSS or a Tailwind arbitrary-value class. The smooth option stacks three layers for the soft, natural depth that a single shadow cannot give.",
+    "tip": "Glassmorphism only works over a colourful or textured backdrop. If the panel looks like a plain white box, change the preview background to a gradient or image colour, and do the same on your real page."
+  },
+  "Image Squisher": {
+    "about": "Shrink an image for the web by re-encoding it as WebP, JPEG or PNG at a quality you choose. It shows the file size before and after with the percentage saved, and gives you a download link. All the work happens on a canvas inside your browser, so private screenshots and client artwork never leave your device.",
+    "tip": "WebP at 70 to 80 percent quality is usually the best trade-off for photos. PNG is lossless, so the quality slider has no effect on it, and a photo converted to PNG often gets larger."
+  },
+  "Aspect Ratio & Grid": {
+    "about": "Type a size such as 1920x1080 and get its reduced ratio (16:9), the decimal value, scaled heights for common widths and the matching CSS aspect-ratio declaration. Below that, set the number of columns, the gap and the container width, and it tells you the exact pixel width each grid column ends up with.",
+    "tip": "Use the aspect-ratio line for video embeds and card images to avoid layout shift, because the browser can reserve the space before the media loads."
+  },
+  "Gradient Generator": {
+    "about": "Pick three colours and build a linear, radial or mesh-style gradient with a live preview. The output is a ready-to-paste CSS background declaration. Linear gradients have an angle slider, radial gradients spread from the centre, and the mesh option layers three soft radial glows over a dark base for the popular blurred-blob look.",
+    "tip": "If the middle of a gradient looks muddy, swap the second colour for one that sits between the other two on the colour wheel, instead of letting the browser blend through grey."
+  },
+  "CSV ⇄ JSON": {
+    "about": "Paste rows copied from Excel or Google Sheets and get a JSON array of objects, with the first row used as the keys. Paste JSON instead and the tool detects it and returns CSV. It copes with quoted fields, commas inside quotes, and tab, semicolon or comma separators, and numeric cells are converted to real numbers.",
+    "tip": "A column of IDs with leading zeros, such as 00123, will lose the zeros once it is treated as a number. Add a text prefix, or check the JSON output before importing it into another system."
+  },
+  "Tafqeet (Number to Words)": {
+    "about": "Tafqeet is the practice of writing an amount in words so it cannot be altered on a cheque, contract or invoice. Enter a figure and get the sentence in English and in Arabic, in the formal 'فقط … لا غير' form used in Egypt and the Gulf, for Egyptian pounds, US dollars or Saudi riyals. It handles amounts up to 999,999,999,999 and includes the fractional unit.",
+    "tip": "Type the decimals you want written out. An entry like 1250.75 produces the main currency and the 75 piastres or cents, while a whole number produces no fractional part."
+  },
+  "VAT, Tax & Margin": {
+    "about": "Add VAT to a net price, or take it out of a gross price, then see profit, margin and markup against your cost. The rate defaults to 14 percent, the standard Egyptian rate, and can be set to any percentage. Switch between amount excluding VAT and including VAT to match whether your supplier quotes before or after tax.",
+    "tip": "Margin and markup are not the same number. A product bought for 600 and sold for 1,000 has a 40 percent margin but a 66.7 percent markup, so check which one your pricing target refers to."
+  },
+  "List Deduplicator": {
+    "about": "Paste a list with one item per line and get back only the unique entries, with spaces trimmed and blank lines removed. You can sort it A to Z, Z to A or numerically, ignore upper and lower case, and show how many times each item appeared. The summary line states how many rows went in and how many duplicates were removed.",
+    "tip": "Turn on Show counts before you delete anything. The items with the highest counts are often the ones worth checking for a data-entry problem, such as a customer who was imported twice."
+  },
+  "Loan & Compound Interest": {
+    "about": "In loan mode, enter the amount, the annual interest rate and the term in years to get the monthly instalment, the total you will repay and the total interest. In compound mode, the same fields project savings growth with interest added every month, with an optional monthly deposit, and show the final value, the amount you paid in and the growth earned.",
+    "tip": "Compare the same loan over different terms. Stretching a loan lowers the monthly payment but raises the total interest, and the difference is often larger than people expect."
+  },
+  "CSV → Markdown / HTML": {
+    "about": "Copy a block of cells from a spreadsheet and turn it into a Markdown table for a README, wiki or issue, or into clean HTML table markup with thead and tbody for a web page. The first row becomes the header. The HTML output escapes special characters, so symbols like ampersands and angle brackets in your data do not break the page.",
+    "tip": "Markdown tables render as plain text in some editors, so keep the cell contents short. For long text, the HTML output gives you more room to add classes and styling afterwards."
+  },
+  "Date & Working Days": {
+    "about": "Choose two dates and see the calendar days between them, the number of weeks, the Monday-to-Friday business days (counting both the start and the end date) and the working hours at your daily schedule. It is built for estimating delivery times, notice periods, project timelines and payroll periods.",
+    "tip": "Public holidays are not subtracted, and the weekend is fixed as Saturday and Sunday. For a region with a Friday-Saturday weekend or many holidays, subtract those days from the business-day figure yourself."
+  },
+  "Invoice Summary": {
+    "about": "Write one line item per row as name, quantity, price, and get a tidy plain-text receipt: each line total, the subtotal, the tax at your chosen rate and the grand total in your currency. It suits quick quotes, chat messages to clients and a first check on the arithmetic before you build the final document in your accounting software.",
+    "tip": "Keep the item names free of commas, since a comma separates the fields. Write a name like 'Design, logo' as 'Design - logo' so the quantity and price land in the right columns."
+  },
+  "Case & Text Cleaner": {
+    "about": "Rename variables, headings and column names without retyping them. Convert text to camelCase, snake_case, kebab-case, Title Case, UPPER or lower, with each line handled separately so you can paste a whole list. The clean spaces option collapses repeated spaces and blank lines, which is handy for text copied from PDFs and emails.",
+    "tip": "The tool understands existing camelCase, so pasting myVariableName and choosing snake_case gives my_variable_name. It works the same way on a list of many names pasted at once."
+  },
+  "Word Counter & Keywords": {
+    "about": "Paste an article, product description or social post and get the word count, character counts with and without spaces, the number of sentences, and estimated reading and speaking time. The keyword list shows the eight most repeated meaningful words with their share of the text, which helps spot overused terms and check topical focus.",
+    "tip": "Treat keyword density as a sanity check, not a target. If one word takes up more than a few percent of the text, the writing is probably repeating itself, and a synonym will read better."
+  },
+  "Meta & OpenGraph": {
+    "about": "Fill in a title, description, canonical URL and share image, and get the full set of head tags: the standard title and description, canonical link, robots directive, Open Graph tags for Facebook and LinkedIn, and Twitter card tags. The preview shows roughly how the page will look in search results and in a social share before you publish.",
+    "tip": "Keep titles around 60 characters and descriptions under 160 so search engines are less likely to cut them off. Use a 1200 by 630 pixel image to get the large preview card on social networks."
+  },
+  "UTM Builder & QR": {
+    "about": "Add source, medium, campaign, term and content parameters to any link so your analytics can tell exactly which email, post or flyer brought each visit. The finished URL is shown ready to copy, and a QR code for it is generated in the page and can be downloaded as a scalable SVG for print or a slide.",
+    "tip": "Pick a naming convention and keep to it. Analytics treats Email, email and e-mail as three separate sources, so lowercase values with underscores keep your reports clean."
+  },
+  "Markdown ⇄ HTML": {
+    "about": "Write Markdown on the left and get clean HTML along with a live preview. It supports the everyday syntax: headings, bold and italic, inline code, links, lists and paragraphs. It is a quick way to turn a README section or a draft post into markup you can paste into a CMS, an email template or a static page.",
+    "tip": "Check the preview for the links. For safety, only http, https, mailto and relative links are kept as live links, so other schemes will not be turned into clickable anchors."
+  },
+  "Slug & Hashtags": {
+    "about": "Turn a title into a short, readable URL slug, or a list of phrases into hashtags. Slugs are lowercased and joined with hyphens, accents and Arabic diacritics are removed, and Arabic letters are kept, so an Arabic headline gives an Arabic slug. Hashtag mode capitalises each word and joins them into CamelCase tags that screen readers can read aloud.",
+    "tip": "Drop filler words by hand before you convert. A slug like best-json-formatter is easier to read, share and rank for than how-to-use-the-best-json-formatter-for-your-project."
+  },
+  "Dummy Data Generator": {
+    "about": "Fill a design or a test database with realistic-looking placeholders. Generate Lorem Ipsum paragraphs, a list of people with names, emails and ages, a plain list of emails, or JSON rows you can paste into a mock API. Choose any count up to 200, and click again for a different random set.",
+    "tip": "Every email uses the reserved example.com domain, which is set aside for documentation and never delivers mail, so you can use the data in tests without risk of emailing a real person."
+  },
+  "JSON-LD Schema": {
+    "about": "Structured data helps search engines understand a page and can earn rich results such as expandable FAQs. Write your content in a simple pipe-separated format and the tool outputs a script tag with valid JSON-LD for FAQ, Article or Product markup, ready to paste into your page, with the schema.org context already included.",
+    "tip": "For FAQ, put one question and answer per line, split by a vertical bar. For Article and Product, use a single line in the order shown in the sample, then confirm the result with Google's Rich Results Test."
+  }
+}

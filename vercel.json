@@ -1,0 +1,4 @@
+{
+  "outputDirectory": "."
+}
+git add vercel.json && git commit -m "Set Vercel output directory" && git push

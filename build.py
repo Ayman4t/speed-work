@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """SpeedWork static site generator.  Run:  npm install && python3 build.py
 Reads tool definitions from src/app.js and writes one crawlable page per tool."""
-import json, subprocess, os, re, html, hashlib, datetime, shutil
+import json, subprocess, os, re, html, hashlib, datetime, shutil, tempfile
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 BASE = 'https://speedwork.aymanstack.com'
 BB = ['#22d3ee', '#a855f7', '#fde047', '#fb923c']
@@ -19,12 +19,13 @@ SLUG = {'Tafqeet (Number to Words)': 'tafqeet-arabic-number-to-words'}
 slug = lambda n: SLUG.get(n) or re.sub(r'[^a-z0-9]+', '-', n.lower()).strip('-')
 
 # ---- read tool metadata straight from the app source -------------------------------------------
-src = open('src/app.js', encoding='utf-8').read()
-node = ("const vm=require('vm');const s=%s;const x={};vm.createContext(x);"
-        "vm.runInContext(s.slice(0,s.indexOf('const BB='))+';var __R=ROLES_CONFIG.map(r=>({id:r.id,n:r.n,i:r.i,a:r.a,"
-        "tools:r.tools.map(t=>({n:t.n,ti:t.ti,i:t.i,k:t.k,d:t.d,img:!!t.img,noin:!!t.noin}))}));',x);"
-        "console.log(JSON.stringify(x.__R))") % json.dumps(src)
-R = json.loads(subprocess.check_output(['node', '-e', node]))
+LOADER = """const vm=require('vm'),fs=require('fs');const s=fs.readFileSync(process.argv[2],'utf8');const x={};vm.createContext(x);
+vm.runInContext(s.slice(0,s.indexOf('const BB='))+';var __R=ROLES_CONFIG.map(r=>({id:r.id,n:r.n,i:r.i,a:r.a,tools:r.tools.map(t=>({n:t.n,ti:t.ti,i:t.i,k:t.k,d:t.d,img:!!t.img,noin:!!t.noin}))}));',x);
+process.stdout.write(JSON.stringify(x.__R))"""
+# The loader goes through a temp file (not `node -e`) because Windows limits command lines to ~32k chars.
+with tempfile.TemporaryDirectory() as _d:
+    _js = os.path.join(_d, 'load.js'); open(_js, 'w', encoding='utf-8').write(LOADER)
+    R = json.loads(subprocess.check_output(['node', _js, os.path.abspath('src/app.js')], encoding='utf-8'))
 seen = set()
 for ri, r in enumerate(R):
     r['hub'] = '/%s/' % HUB[r['id']]
@@ -44,13 +45,13 @@ TODAY = datetime.date.today().isoformat()
 
 # ---- assets ----------------------------------------------------------------------------------------
 try:
-    subprocess.check_call(['npx', '--no-install', 'tailwindcss', '-i', 'src/input.css', '-o', 'assets/style.css', '--minify'], stderr=subprocess.DEVNULL)
+    subprocess.check_call([shutil.which('npx') or 'npx', '--no-install', 'tailwindcss', '-i', 'src/input.css', '-o', 'assets/style.css', '--minify'], stderr=subprocess.DEVNULL)
 except (subprocess.CalledProcessError, FileNotFoundError):
     print('WARNING: Tailwind not installed (run npm install); keeping the existing assets/style.css')
-shutil.copy('src/app.js', 'assets/app.js')
-open('assets/routes.js', 'w').write('const ROUTES=%s;\n' % json.dumps([[t['path'] for t in r['tools']] for r in R]))
+shutil.copyfile('src/app.js', 'assets/app.js')
+open('assets/routes.js', 'w', encoding='utf-8').write('const ROUTES=%s;\n' % json.dumps([[t['path'] for t in r['tools']] for r in R]))
 V = {f: hashlib.md5(open('assets/' + f, 'rb').read()).hexdigest()[:8] for f in ('style.css', 'app.js', 'routes.js')}
-open('favicon.svg', 'w').write('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><text x="32" y="41" font-family="monospace" font-weight="800" font-size="26" text-anchor="middle" fill="#04110c">&lt;/&gt;</text></svg>')
+open('favicon.svg', 'w', encoding='utf-8').write('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><text x="32" y="41" font-family="monospace" font-weight="800" font-size="26" text-anchor="middle" fill="#04110c">&lt;/&gt;</text></svg>')
 try:
     from PIL import Image, ImageDraw, ImageFont
     im = Image.new('RGB', (1200, 630), '#090d16'); d = ImageDraw.Draw(im)
@@ -176,7 +177,7 @@ for ri, r in enumerate(R):
 open('404.html', 'w', encoding='utf-8').write(head('Page not found | SpeedWork', 'This page does not exist. Browse all SpeedWork tools.', '/404.html', None, [])
     .replace('index,follow', 'noindex') + f'<body>{top()}<main id="main" class="max-w-3xl mx-auto px-4 py-24 text-center"><h1 class="text-5xl font-extrabold hero-g">404</h1><p class="text-lg text-slate-300 mt-4">That page does not exist, but there are 32 tools waiting for you.</p><a href="/" class="gbtn mt-8">Browse all tools</a></main>{footer()}</body></html>')
 urls = ['/'] + [r['hub'] for r in R] + [t['path'] for t in ALL]
-open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{BASE}{u}</loc><lastmod>{TODAY}</lastmod><priority>{"1.0" if u == "/" else "0.8"}</priority></url>\n' for u in urls) + '</urlset>\n')
-open('robots.txt', 'w').write(f'User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n')
+open('sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{BASE}{u}</loc><lastmod>{TODAY}</lastmod><priority>{"1.0" if u == "/" else "0.8"}</priority></url>\n' for u in urls) + '</urlset>\n')
+open('robots.txt', 'w', encoding='utf-8').write(f'User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n')
 long_d = [t['h1'] for t in ALL if len(f'{t["d"]} Free, private and runs in your browser – no sign-up.') > 160]
 print(f'{len(ALL)} tool pages + {len(R)} hubs + home + 404; sitemap {len(urls)} URLs; meta descriptions >160 chars: {long_d}')
